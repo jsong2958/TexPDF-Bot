@@ -4,6 +4,7 @@ __pycache__/
 venv/
 
 data.json
+resp.json
 preamble.tex
 
 .DS_Store

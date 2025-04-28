@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
+print(API_KEY)
+
 def get_tex_name(path):
     
     if path.endswith(".tex"):
@@ -36,7 +38,7 @@ def get_tex(path):
             return
 
     else:
-        print(response.status_code)
+        print("get_tex failed:", response.status_code)
 
 
 def compile_to_pdf(path):

@@ -30,7 +30,7 @@ def write_json(resp):
 
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/', methods=['POST'])
 def webhook():
     global paths
     data = request.get_json()
@@ -39,14 +39,35 @@ def webhook():
     for path in paths:
         print(path)
 
-        tex_name = get_tex_name(path)
-        
-        pdf = tex_name.replace(".tex", ".pdf")
-        
-        get_tex(path)
-        compile_to_pdf(path)
-        push_pdf(path, pdf)
-        delete_files(pdf)
+        try:
+            tex_name = get_tex_name(path)
+        except Exception as e:
+            print(f"Error for get_tex_name: {e}")
+
+        try:
+            pdf = tex_name.replace(".tex", ".pdf")
+        except Exception as e:
+            print(f"Error for replace .tex with .pdf: {e}")
+
+        try:
+            get_tex(path)
+        except Exception as e:
+            print(f"Error for get_tex: {e}")
+
+        try:
+            compile_to_pdf(path)
+        except Exception as e:
+            print(f"Error for compile_to_pdf: {e}")
+
+        try:
+            push_pdf(path, pdf)
+        except Exception as e:
+            print(f"Error for push_pdf: {e}")
+
+        try:
+            delete_files(pdf)
+        except Exception as e:
+            print(f"Error for delete_files: {e}")
 
     paths = []
     with open("data.json", "w") as f:
