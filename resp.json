@@ -1,0 +1,53 @@
+{
+    "content": {
+        "name": "Ch01_S1_2.tex",
+        "path": "MATH 4651 - Advanced Linear Algebra/Chapter_01/tex/Ch01_S1_2.tex",
+        "sha": "e4b4d372d8447688fdf7c5bb5254b1b1acf05c10",
+        "size": 163449,
+        "url": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/contents/MATH%204651%20-%20Advanced%20Linear%20Algebra/Chapter_01/tex/Ch01_S1_2.tex?ref=main",
+        "html_url": "https://github.com/jsong2958/UVA-Math-Notes/blob/main/MATH%204651%20-%20Advanced%20Linear%20Algebra/Chapter_01/tex/Ch01_S1_2.tex",
+        "git_url": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/git/blobs/e4b4d372d8447688fdf7c5bb5254b1b1acf05c10",
+        "download_url": "https://raw.githubusercontent.com/jsong2958/UVA-Math-Notes/main/MATH%204651%20-%20Advanced%20Linear%20Algebra/Chapter_01/tex/Ch01_S1_2.tex",
+        "type": "file",
+        "_links": {
+            "self": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/contents/MATH%204651%20-%20Advanced%20Linear%20Algebra/Chapter_01/tex/Ch01_S1_2.tex?ref=main",
+            "git": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/git/blobs/e4b4d372d8447688fdf7c5bb5254b1b1acf05c10",
+            "html": "https://github.com/jsong2958/UVA-Math-Notes/blob/main/MATH%204651%20-%20Advanced%20Linear%20Algebra/Chapter_01/tex/Ch01_S1_2.tex"
+        }
+    },
+    "commit": {
+        "sha": "2ac9d4962e812583ccddc965b40dd0b5626d904f",
+        "node_id": "C_kwDOOgB4QdoAKDJhYzlkNDk2MmU4MTI1ODNjY2RkYzk2NWI0MGRkMGI1NjI2ZDkwNGY",
+        "url": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/git/commits/2ac9d4962e812583ccddc965b40dd0b5626d904f",
+        "html_url": "https://github.com/jsong2958/UVA-Math-Notes/commit/2ac9d4962e812583ccddc965b40dd0b5626d904f",
+        "author": {
+            "name": "Joseph Song",
+            "email": "115597448+jsong2958@users.noreply.github.com",
+            "date": "2025-04-27T16:18:24Z"
+        },
+        "committer": {
+            "name": "Joseph Song",
+            "email": "115597448+jsong2958@users.noreply.github.com",
+            "date": "2025-04-27T16:18:24Z"
+        },
+        "tree": {
+            "sha": "76b34b698b3162e10272912d8f6625ca6f9d9331",
+            "url": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/git/trees/76b34b698b3162e10272912d8f6625ca6f9d9331"
+        },
+        "message": "Update Ch01_S1_2.pdf",
+        "parents": [
+            {
+                "sha": "832c8375df7f8fd1bbfb90525949a1c1ee89e5b3",
+                "url": "https://api.github.com/repos/jsong2958/UVA-Math-Notes/git/commits/832c8375df7f8fd1bbfb90525949a1c1ee89e5b3",
+                "html_url": "https://github.com/jsong2958/UVA-Math-Notes/commit/832c8375df7f8fd1bbfb90525949a1c1ee89e5b3"
+            }
+        ],
+        "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+        }
+    }
+}

@@ -1,0 +1,9 @@
+.env
+
+__pycache__/
+venv/
+
+data.json
+preamble.tex
+
+.DS_Store
