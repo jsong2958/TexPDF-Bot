@@ -18,19 +18,26 @@ def write_json(resp):
             paths = []
             return
         
-        for file in head_commit.get("modified", []):
-            if file.endswith(".pdf"):
-                paths = []
-                return
+        committer_name = head_commit.get("committer", {}).get("name", "")
+        if committer_name == "TexPDF-Bot":
+            print("Commit made by bot. Skipping.")
+            paths = []
+            return
+
+        modified = head_commit.get("modified", [])
+        added = head_commit.get("added", [])
+        changed_files = modified + added
+
+        if all(file.endswith(".pdf") for file in changed_files):
+            paths = []
+            return
         
-        paths = head_commit.get("modified", [])
-        paths.extend(head_commit.get("added", []))
+        paths = [file for file in changed_files if not file.endswith(".pdf")]
+        
+       
 
 
-
-
-
-@app.route('/', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
     global paths
     data = request.get_json()
@@ -38,7 +45,8 @@ def webhook():
     print(f"Paths: {paths}")
     for path in paths:
         print(path)
-
+        with open("xd.json", "w") as f:
+            json.dump(data, f, indent=4)
         try:
             tex_name = get_tex_name(path)
         except Exception as e:
@@ -65,13 +73,14 @@ def webhook():
             print(f"Error for push_pdf: {e}")
 
         try:
+            pdf = pdf.replace(".pdf", "")
             delete_files(pdf)
         except Exception as e:
             print(f"Error for delete_files: {e}")
 
     paths = []
-    with open("data.json", "w") as f:
-        f.write("")
+    # with open("data.json", "w") as f:
+    #     f.write("")
 
     return "OK", 200
 

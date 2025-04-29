@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
-print(API_KEY)
-
 def get_tex_name(path):
     
     if path.endswith(".tex"):
@@ -66,7 +64,11 @@ def push_pdf(path, pdf):
 
     body = {
         "message": f"Update {get_tex_name(path).replace(".tex", ".pdf")}",
-        "content": encode_pdf(pdf)
+        "content": encode_pdf(pdf),
+        "committer": {
+            "name": "TexPDF-Bot",
+            "email": "TexPDF@bot.com"
+        }
     }
 
     if sha:
@@ -84,10 +86,6 @@ def delete_files(name):
     for file in os.listdir(dir):
         if name in file:
             path = os.path.join(dir, file)
-            try:
-                os.remove(path)
-                print(f"Deleted file: {path}")
-            except FileNotFoundError:
-                print(f"File not found: {path}")
-            except Exception as e:
-                print(f"Error deleting file {path}: {e}")
+            os.remove(path)
+            
+
