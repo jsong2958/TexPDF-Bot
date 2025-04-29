@@ -8,11 +8,7 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 def get_tex_name(path):
-    
-    if path.endswith(".tex"):
-        return os.path.basename(path)
-
-    return None
+    return os.path.basename(path) if path.endswith(".tex") else None
 
 
 def get_tex(path):
@@ -40,15 +36,14 @@ def get_tex(path):
 
 
 def compile_to_pdf(path):
-    get_tex(path)
     file = get_tex_name(path)
     os.system(f"pdflatex -halt-on-error -quiet -output-format=pdf -enable-installer {file}")
 
 
 def encode_pdf(pdf):
     with open(pdf, "rb") as file:
-        encoded = base64.b64encode(file.read()).decode("utf-8")
-    return encoded
+        return base64.b64encode(file.read()).decode("utf-8")
+    
 
 def push_pdf(path, pdf):
     url = f"https://api.github.com/repos/jsong2958/uva-math-notes/contents/MATH 4651 - Advanced Linear Algebra/Chapter_01/pdf/{pdf}"

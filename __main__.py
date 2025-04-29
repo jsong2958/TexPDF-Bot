@@ -6,81 +6,72 @@ app = Flask(__name__)
 
 paths = []
 
-def write_json(resp):
-    global paths
+def save_response_to_file(resp):
     with open("data.json", "w") as file:
         json.dump(resp, file, indent=4)
+
+def load_response_file():
     with open("data.json", "r") as file:
-        data = json.load(file)
+        return json.load(file)
+    
+def process_commit_data(data):
+    global paths
 
-        head_commit = data.get("head_commit")
-        if not head_commit:
-            paths = []
-            return
-        
-        committer_name = head_commit.get("committer", {}).get("name", "")
-        if committer_name == "TexPDF-Bot":
-            print("Commit made by bot. Skipping.")
-            paths = []
-            return
+    head_commit = data.get("head_commit")
+    if not head_commit:
+        paths = []
+        return
+    
+    committer_name = head_commit.get("committer", {}).get("name", "")
+    if committer_name == "TexPDF-Bot":
+        print("Commit made by bot. Skipping.")
+        paths = []
+        return
 
-        modified = head_commit.get("modified", [])
-        added = head_commit.get("added", [])
-        changed_files = modified + added
+    ref = data.get("ref", {})
+    if "overleaf" in ref:
+        print("Overleaf sync")
+        paths = []
+        return
 
-        if all(file.endswith(".pdf") for file in changed_files):
-            paths = []
-            return
-        
-        paths = [file for file in changed_files if not file.endswith(".pdf")]
+    modified = head_commit.get("modified", [])
+    added = head_commit.get("added", [])
+    changed_files = modified + added
+
+    if all(file.endswith(".pdf") for file in changed_files):
+        paths = []
+        return
+    
+    paths = [file for file in changed_files if not file.endswith(".pdf")]
         
        
+def handle_tex(path):
+    try:
+        tex_name = get_tex_name(path)
+        pdf_name = tex_name.replace(".tex", ".pdf")
 
+        get_tex(path)
+        compile_to_pdf(path)
+        push_pdf(path, pdf_name)
+
+        delete_files(pdf_name.replace(".pdf", ""))
+    except Exception as e:
+        print(f"Error processing file {path}: {e}")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     global paths
     data = request.get_json()
-    write_json(data)
-    print(f"Paths: {paths}")
+    
+    save_response_to_file(data)
+    response_data = load_response_file()
+    process_commit_data(response_data)
+
     for path in paths:
-        print(path)
-        with open("xd.json", "w") as f:
-            json.dump(data, f, indent=4)
-        try:
-            tex_name = get_tex_name(path)
-        except Exception as e:
-            print(f"Error for get_tex_name: {e}")
-
-        try:
-            pdf = tex_name.replace(".tex", ".pdf")
-        except Exception as e:
-            print(f"Error for replace .tex with .pdf: {e}")
-
-        try:
-            get_tex(path)
-        except Exception as e:
-            print(f"Error for get_tex: {e}")
-
-        try:
-            compile_to_pdf(path)
-        except Exception as e:
-            print(f"Error for compile_to_pdf: {e}")
-
-        try:
-            push_pdf(path, pdf)
-        except Exception as e:
-            print(f"Error for push_pdf: {e}")
-
-        try:
-            pdf = pdf.replace(".pdf", "")
-            delete_files(pdf)
-        except Exception as e:
-            print(f"Error for delete_files: {e}")
-
+        handle_tex(path)
+    
     paths = []
-    # with open("data.json", "w") as f:
-    #     f.write("")
+    save_response_to_file({})
 
     return "OK", 200
 
