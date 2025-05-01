@@ -19,7 +19,7 @@ def webhook():
         handle_tex(path)
     
     paths.clear()
-    # save_response_to_file({})
+    save_response_to_file({})
 
     return "OK", 200
 

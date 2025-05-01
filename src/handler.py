@@ -5,11 +5,13 @@ import json
 paths = GlobalState.paths
 
 def save_response_to_file(resp):
-    with open("data.json", "w") as file:
+    file_path = os.path.join(BASE_DIR, "data.json")
+    with open(file_path, "w") as file:
         json.dump(resp, file, indent=4)
 
 def load_response_file():
-    with open("data.json", "r") as file:
+    file_path = os.path.join(BASE_DIR, "data.json")
+    with open(file_path, "r") as file:
         return json.load(file)
     
 def process_commit_data(data):

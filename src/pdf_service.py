@@ -1,10 +1,13 @@
 import os
 import requests
 import base64
+import subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+
+BASE_DIR = os.path.join(os.getcwd(), "src")
 
 def get_tex_name(path):
     return os.path.basename(path) if path.endswith(".tex") else None
@@ -26,7 +29,8 @@ def get_tex(path):
         tex = requests.get(download_url)
         tex_name = get_tex_name(path)
         
-        with open(tex_name, "w") as file:
+        file_path = os.path.join(BASE_DIR, tex_name)
+        with open(file_path, "w") as file:
             file.write(tex.text)
             return
 
@@ -36,9 +40,13 @@ def get_tex(path):
 
 def compile_to_pdf(path):
     file = get_tex_name(path)
-    os.system(f"pdflatex -halt-on-error -quiet -output-format=pdf -enable-installer {file}")
-
-
+    print("BASE_DIR: ", BASE_DIR)
+    os.chdir(BASE_DIR)
+    print("CUR DIR: ", os.getcwd())
+    subprocess.run(["pdflatex", "-halt-on-error", "-interaction=nonstopmode",
+                    f"-output-directory={BASE_DIR}", "-output-format=pdf", file],
+                    check=True)
+    
 def encode_pdf(pdf):
     with open(pdf, "rb") as file:
         return base64.b64encode(file.read()).decode("utf-8")
@@ -58,6 +66,8 @@ def push_pdf(path, pdf):
         sha = exists_file_response.json()["sha"]
 
     body = {
+    
+    
         "message": f"Update {get_tex_name(path).replace(".tex", ".pdf")}",
         "content": encode_pdf(pdf),
         "committer": {
